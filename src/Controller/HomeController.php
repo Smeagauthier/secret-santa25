@@ -16,10 +16,6 @@ class HomeController extends AbstractController
         // On récupère la dernière session (pour le test)
         $session = $sessionRepo->findOneBy([], ['id' => 'DESC']);
 
-        if (!$session) {
-            return $this->render('home/no_session.html.twig');
-        }
-
         return $this->render('home/index.html.twig', [
             'participants' => $session->getParticipants(),
             'session' => $session,

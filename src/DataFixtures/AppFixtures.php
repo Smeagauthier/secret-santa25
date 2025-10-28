@@ -42,7 +42,6 @@ class AppFixtures extends Fixture
         foreach ($participantsData as [$name, $email]) {
             $participant = (new Participant())
                 ->setName($name)
-                ->setEmail($email)
                 ->setSession($session)
                 ->setToken(Uuid::v4()->toRfc4122());
 
