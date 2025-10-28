@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+{% block title %}Secret Santa 🎅{% endblock %}
+
+{% block body %}
+    <main class="min-h-screen flex flex-col items-center justify-center text-center py-12 px-4 relative overflow-hidden"
+          style="background:url('{{ asset('images/noel1.JPG') }}') center/cover no-repeat fixed; color:#F8F9FA;">
+
+        <!-- 🌒 Overlay sombre -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black/40 z-[1]"></div>
+
+        <!-- 🎅 Contenu principal -->
+        <div class="z-[2] flex flex-col items-center justify-center w-full max-w-4xl">
+
+            <!-- 🎄 Titre principal -->
+            <h1 class="text-3xl sm:text-3xl font-extrabold mb-6 text-yellow-300 tracking-wide uppercase animate-pulse-slow">
+                Noël des Rigaux 2025 🎁
+            </h1>
+
+            <!-- ✨ Sous-titre -->
+            <p class="text-white font-medium text-lg sm:text-xl mb-12 px-6 py-3 rounded-lg shadow-none">
+                Clique sur ton nom et vois qui tu as tiré aléatoirement !
+            </p>
+
+            <!-- 📜 Liste des participants -->
+            <ul class="flex flex-col w-full items-center space-y-8 mt-6">
+                {% for participant in participants %}
+                    {% set bgClass = loop.index is odd ? 'card-rouge' : 'card-vert' %}
+                    <li class="flex justify-center w-full">
+                        <a href="{{ path('app_reveal_token', { token: participant.token }) }}"
+                           data-token="{{ participant.token }}"
+                           class="santa-card {{ bgClass }}">
+                            <span>{{ participant.name }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <!-- 🎁 Message bas -->
+            <p class="text-lg sm:text-2xl text-white/85 mt-16 italic font-semibold tracking-wide">
+                🎄 Bon tirage et Joyeux Noël à tous ! 🎅
+            </p>
+
+            <!-- 🔔 Son d’ambiance -->
+            <audio id="ding" src="{{ asset('sounds/jingle.mp3') }}"></audio>
+        </div>
+    </main>
+
+    <style>
+        /* ✨ Animation douce sur le titre */
+        @keyframes pulseSlow {
+            0%, 100% { opacity: 1; text-shadow: 0 0 15px rgba(255, 230, 140, 0.4); }
+            50% { opacity: 0.95; text-shadow: 0 0 25px rgba(255, 230, 140, 0.7); }
+        }
+        .animate-pulse-slow {
+            animation: pulseSlow 4s ease-in-out infinite;
+        }
+
+        .santa-card {
+            width: 300px;
+            height: 80px;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #FFEFAF;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-top: 1%;
+            margin-bottom: 1%;
+            transition: background-color 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+        }
+
+        /* 🌲 Cartes spécifiques */
+        .card-rouge {
+            background-color: rgba(183, 28, 28, 0.45);
+        }
+        .card-vert {
+            background-color: rgba(34, 139, 34, 0.45);
+        }
+
+        /* 🎨 Hover : assombrir le fond */
+        .card-rouge:hover {
+            background-color: rgba(183, 28, 28, 0.7);
+        }
+        .card-vert:hover {
+            background-color: rgba(34, 139, 34, 0.7);
+        }
+
+        /* 💫 Effet hover : zoom prénom sans translation */
+        .santa-card span {
+            transition: transform 0.4s ease;
+        }
+
+        /* 📱 Responsive */
+        @media (max-width: 640px) {
+            .santa-card {
+                width: 90%;
+                height: 150px;
+                font-size: 1.6rem;
+            }
+            .santa-card span {
+                font-size: 1.9rem;
+            }
+        }
+    </style>
+
+    <script>
+        // 🌟 Gestion feedback carte ouverte
+        document.addEventListener('DOMContentLoaded', () => {
+            const ding = document.getElementById('ding');
+
+            document.querySelectorAll('a[data-token]').forEach(btn => {
+                const token = btn.dataset.token;
+
+                if (localStorage.getItem('santa_opened_' + token)) {
+                    setOpenedState(btn);
+                }
+
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.setItem('santa_opened_' + token, true);
+                    setOpenedState(btn);
+                    if (ding) ding.play();
+                    setTimeout(() => {
+                        window.location.href = btn.getAttribute('href');
+                    }, 600);
+                });
+            });
+
+            function setOpenedState(btn) {
+                btn.innerHTML = '<span class="block text-2xl font-bold text-gray-300">🎁 Tirage découvert !</span>';
+                btn.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                btn.style.color = '#bbb';
+                btn.style.opacity = '0.7';
+                btn.style.pointerEvents = 'none';
+                btn.style.filter = 'grayscale(0.5)';
+                btn.style.boxShadow = 'none';
+            }
+        });
+    </script>
+{% endblock %}

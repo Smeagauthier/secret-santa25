@@ -1,0 +1,18 @@
+{% extends '../base.html.twig' %}
+{% block title %}Découvre ton Secret Santa{% endblock %}
+{% block body %}
+    <main class="max-w-lg mx-auto text-center p-10">
+        <h1 class="text-3xl font-bold mb-6">🎄 Découvre ton Secret Santa</h1>
+        <form method="post">
+            <input type="text" name="name" placeholder="Ton prénom" class="w-full p-2 mb-2 border rounded">
+            <input type="email" name="email" placeholder="Ton email" class="w-full p-2 mb-2 border rounded">
+            <button class="bg-green-600 text-white px-6 py-2 rounded">Voir mon tirage 🎁</button>
+        </form>
+
+        {% if result %}
+            <div class="mt-6 bg-green-200 text-green-900 p-4 rounded">
+                Tu offres ton cadeau à <strong>{{ result }}</strong> 🎅
+            </div>
+        {% endif %}
+    </main>
+{% endblock %}

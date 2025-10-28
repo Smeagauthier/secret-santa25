@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}🎅 Session prête !{% endblock %}
+
+{% block body %}
+    <main class="min-h-screen bg-gradient-to-br from-green-700 via-emerald-600 to-red-700 text-white flex flex-col items-center justify-center px-6 py-10">
+        <h1 class="text-4xl font-extrabold mb-6">🎁 Tirage Secret Santa {{ session.code }}</h1>
+        <p class="text-center text-white/80 mb-10">Envoie à chacun son lien personnel ci-dessous 👇</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl">
+            {% for link in links %}
+                <div class="bg-white/10 p-6 rounded-xl text-center backdrop-blur-md shadow-xl hover:scale-105 transition">
+                    <h3 class="text-xl font-semibold mb-3">{{ link.name }}</h3>
+                    <a href="{{ link.url }}"
+                       class="inline-block bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm text-white">
+                        Voir son tirage 🎅
+                    </a>
+                    <button
+                            type="button"
+                            class="block mx-auto mt-3 text-xs text-white/80 hover:text-white underline"
+                            onclick="navigator.clipboard?.writeText('{{ link.url }}')">
+                        Copier le lien
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <p class="text-center mt-10">
+            <a href="{{ path('app_home') }}" class="underline text-white/80 hover:text-white">Aller à la page publique</a>
+        </p>
+    </main>
+{% endblock %}

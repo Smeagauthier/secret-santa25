@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+{% block title %}Découvre ton Secret Santa{% endblock %}
+
+{% block body %}
+    <main style="
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            color:#F8F9FA;
+            font-family:'Inter',system-ui,sans-serif;
+            background:
+            linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.55)),
+            url('{{ asset('images/noel2.jpg') }}') center/cover no-repeat fixed;
+            backdrop-filter:blur(6px);
+            padding:2rem;
+            position:relative;
+            overflow-y:hidden;
+            ">
+
+        <!-- 🎅 GIF décoratif -->
+        <img src="https://media.tenor.com/kE_cF5s4eR0AAAAi/santa-wave.gif"
+             alt="Santa"
+             style="width:90px; margin-bottom:1.5rem; z-index:2; filter:drop-shadow(0 0 6px rgba(255,255,255,0.4));">
+
+        <!-- 🌲 Carte principale -->
+        <section style="
+        position:relative;
+        background:linear-gradient(145deg, rgba(27,67,50,0.88), rgba(18,48,35,0.88));
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:24px;
+        padding:3rem 2.5rem;
+        margin-top:1rem;
+        box-shadow:0 0 25px rgba(0,0,0,0.6), inset 0 0 10px rgba(255,255,255,0.05);
+        max-width:520px;
+        width:100%;
+        backdrop-filter:blur(10px);
+        text-align:center;
+        z-index:2;
+    ">
+            <h1 style="
+            font-size:2.4rem;
+            font-weight:800;
+            color:#FFCC70;
+            text-shadow:0 0 12px rgba(255,204,112,0.5);
+            margin-bottom:1rem;
+        ">
+                {{ giver.name }},
+            </h1>
+
+            <h2 style="
+            color:#FFCC70;
+            font-size:1.3rem;
+            margin-bottom:2rem;
+        ">
+                Tu offres ton cadeau à :
+            </h2>
+
+            <!-- ✨ Nom du tiré -->
+            <div id="receiverName" style="
+            font-size:3.2rem;
+            font-weight:800;
+            color:#FFFFFF;
+            opacity:0;
+            transform:scale(0.9);
+            text-shadow:0 0 15px rgba(255,255,255,0.4);
+        ">
+                {{ receiver.name }}
+            </div>
+
+            <div style="
+            width:60px;
+            height:2px;
+            background:linear-gradient(to right, transparent, #FFCC70, transparent);
+            margin:2rem auto;
+        "></div>
+
+            <p style="
+            color:#EAEAEA;
+            font-size:1.1rem;
+            font-weight:500;
+            margin-top:1.5rem;
+        ">
+                Note ton tirage quelque part pour pas oublier !<br>
+            </p>
+        </section>
+
+        <!-- 🗒️ Bouton retour -->
+        <div style="
+        display:flex;
+        flex-direction:column;
+        gap:1.5rem;
+        margin-top:3rem;
+        align-items:center;
+        z-index:2;
+    ">
+            <a href="{{ path('app_home') }}"
+               style="
+               display:inline-block;
+               background:linear-gradient(90deg, #B71C1C, #8B0000);
+               color:#F8F9FA;
+               font-weight:700;
+               padding:1rem 2.8rem;
+               border-radius:14px;
+               text-decoration:none;
+               letter-spacing:0.5px;
+               font-size:1.1rem;
+               box-shadow:0 0 15px rgba(183,28,28,0.4);
+               transition:all 0.3s ease;
+           ">
+                ← Retour à la liste
+            </a>
+        </div>
+
+        <!-- ❄️ Flocons décoratifs -->
+        <img src="https://media.tenor.com/U0DkLzRaqaIAAAAi/snow-christmas.gif"
+             alt="Snow"
+             style="width:100px; margin-top:2rem; opacity:0.9; filter:drop-shadow(0 0 6px rgba(255,255,255,0.4)); z-index:2;">
+
+        <script>
+            window.addEventListener('load', () => {
+                const name = document.getElementById('receiverName');
+                setTimeout(() => {
+                    name.animate([
+                        { opacity: 0, transform: 'scale(0.9)' },
+                        { opacity: 1, transform: 'scale(1.05)' },
+                        { opacity: 1, transform: 'scale(1)' }
+                    ], {
+                        duration: 1000,
+                        easing: 'ease-out',
+                        fill: 'forwards'
+                    });
+                }, 1200);
+            });
+        </script>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // 🎁 Animation d’apparition du prénom tiré
+        window.addEventListener('load', () => {
+            const name = document.getElementById('receiverName');
+            setTimeout(() => {
+                name.animate([
+                    { opacity: 0, transform: 'scale(0.9)' },
+                    { opacity: 1, transform: 'scale(1.05)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], {
+                    duration: 2200,
+                    easing: 'ease-out',
+                    fill: 'forwards'
+                });
+            }, 1200);
+        });
+    </script>
+{% endblock %}
